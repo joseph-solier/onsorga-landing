@@ -298,6 +298,8 @@
       font-weight: 600;
       color: var(--muted);
       background: rgba(255,255,255,0.03);
+      cursor: pointer;
+      transition: all 0.15s;
     }
 
     .phone-tab.active {
@@ -632,33 +634,176 @@
         </div>
 
         <div class="phone-tabs">
-          <div class="phone-tab active">Tâches</div>
-          <div class="phone-tab">Dépenses</div>
-          <div class="phone-tab">Planning</div>
+          <div class="phone-tab active" onclick="switchTab(0)">Tâches</div>
+          <div class="phone-tab" onclick="switchTab(1)">Dépenses</div>
+          <div class="phone-tab" onclick="switchTab(2)">Planning</div>
         </div>
 
-        <div class="task-item">
-          <div class="task-check done">✓</div>
-          <span class="task-label done">Réserver le chalet</span>
-          <div class="avatar-mini" style="background:#6C63FF">L</div>
+        <!-- TAB TÂCHES -->
+        <div class="tab-content" id="tab-0">
+          <div class="task-item">
+            <div class="task-check done">✓</div>
+            <span class="task-label done">Réserver le chalet</span>
+            <div class="avatar-mini" style="background:#6C63FF">L</div>
+          </div>
+          <div class="task-item">
+            <div class="task-check done">✓</div>
+            <span class="task-label done">Acheter les forfaits</span>
+            <div class="avatar-mini" style="background:#F59E0B">M</div>
+          </div>
+          <div class="task-item">
+            <div class="task-check todo"></div>
+            <span class="task-label">Covoiturage vendredi</span>
+            <div class="avatar-mini" style="background:#43D9AD">S</div>
+          </div>
+          <div class="task-item">
+            <div class="task-check todo"></div>
+            <span class="task-label">Courses repas du soir</span>
+            <div class="avatar-mini" style="background:#FF6584; font-size:8px">+2</div>
+          </div>
         </div>
 
-        <div class="task-item">
-          <div class="task-check done">✓</div>
-          <span class="task-label done">Acheter les forfaits</span>
-          <div class="avatar-mini" style="background:#F59E0B">M</div>
+        <!-- TAB DÉPENSES -->
+        <div class="tab-content" id="tab-1" style="display:none">
+
+          <!-- Section remboursements -->
+          <div style="font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.4);margin-bottom:8px">REMBOURSEMENTS <span style="background:rgba(255,255,255,0.07);border-radius:999px;padding:1px 6px;font-size:10px">3</span></div>
+
+          <!-- Anna → Lucas : 211,75 € -->
+          <div style="padding:10px 12px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:14px;display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <div class="avatar-mini" style="background:#FF6584;width:22px;height:22px;font-size:9px;flex-shrink:0">A</div>
+            <span style="font-size:11px;color:rgba(255,255,255,0.25)">→</span>
+            <div class="avatar-mini" style="background:#6C63FF;width:22px;height:22px;font-size:9px;flex-shrink:0">L</div>
+            <span style="flex:1;font-size:11px;color:rgba(255,255,255,0.7);font-weight:500">Anna doit 211,75 € à Lucas</span>
+            <span style="font-size:12px;font-weight:700;color:#F59E0B">211,75 €</span>
+          </div>
+
+          <!-- Sophie → Lucas : 56,50 € -->
+          <div style="padding:10px 12px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:14px;display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <div class="avatar-mini" style="background:#43D9AD;width:22px;height:22px;font-size:9px;flex-shrink:0">S</div>
+            <span style="font-size:11px;color:rgba(255,255,255,0.25)">→</span>
+            <div class="avatar-mini" style="background:#6C63FF;width:22px;height:22px;font-size:9px;flex-shrink:0">L</div>
+            <span style="flex:1;font-size:11px;color:rgba(255,255,255,0.7);font-weight:500">Sophie doit 56,50 € à Lucas</span>
+            <span style="font-size:12px;font-weight:700;color:#F59E0B">56,50 €</span>
+          </div>
+
+          <!-- Sophie → Marie : 48,25 € -->
+          <div style="padding:10px 12px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:14px;display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <div class="avatar-mini" style="background:#43D9AD;width:22px;height:22px;font-size:9px;flex-shrink:0">S</div>
+            <span style="font-size:11px;color:rgba(255,255,255,0.25)">→</span>
+            <div class="avatar-mini" style="background:#F59E0B;width:22px;height:22px;font-size:9px;flex-shrink:0">M</div>
+            <span style="flex:1;font-size:11px;color:rgba(255,255,255,0.7);font-weight:500">Sophie doit 48,25 € à Marie</span>
+            <span style="font-size:12px;font-weight:700;color:#F59E0B">48,25 €</span>
+          </div>
+
+          <!-- Total banner (violet) -->
+          <div style="padding:12px 14px;background:rgba(108,99,255,0.1);border:1px solid rgba(108,99,255,0.2);border-radius:14px;display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <span style="font-size:18px">💰</span>
+            <div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.5)">Total du groupe</div>
+              <div style="font-size:17px;font-weight:800;letter-spacing:-0.5px">847,00 €</div>
+            </div>
+            <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.3)">3 dépenses</span>
+          </div>
+
+          <!-- Section dépenses -->
+          <div style="font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.4);margin-bottom:8px">DÉPENSES <span style="background:rgba(255,255,255,0.07);border-radius:999px;padding:1px 6px;font-size:10px">3</span></div>
+
+          <div class="task-item" style="padding:10px 12px">
+            <div class="avatar-mini" style="background:#6C63FF;width:24px;height:24px;flex-shrink:0">L</div>
+            <div style="flex:1;margin-left:10px">
+              <div style="font-size:12px;font-weight:600">Chalet</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.35)">Payé par Lucas</div>
+            </div>
+            <span style="font-size:13px;font-weight:700">480,00 €</span>
+            <span style="color:rgba(255,255,255,0.2);margin-left:4px">›</span>
+          </div>
+          <div class="task-item" style="padding:10px 12px">
+            <div class="avatar-mini" style="background:#F59E0B;width:24px;height:24px;flex-shrink:0">M</div>
+            <div style="flex:1;margin-left:10px">
+              <div style="font-size:12px;font-weight:600">Forfaits ski</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.35)">Payé par Marie</div>
+            </div>
+            <span style="font-size:13px;font-weight:700">260,00 €</span>
+            <span style="color:rgba(255,255,255,0.2);margin-left:4px">›</span>
+          </div>
+          <div class="task-item" style="padding:10px 12px">
+            <div class="avatar-mini" style="background:#43D9AD;width:24px;height:24px;flex-shrink:0">S</div>
+            <div style="flex:1;margin-left:10px">
+              <div style="font-size:12px;font-weight:600">Courses</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.35)">Payé par Sophie</div>
+            </div>
+            <span style="font-size:13px;font-weight:700">107,00 €</span>
+            <span style="color:rgba(255,255,255,0.2);margin-left:4px">›</span>
+          </div>
         </div>
 
-        <div class="task-item">
-          <div class="task-check todo"></div>
-          <span class="task-label">Covoiturage vendredi</span>
-          <div class="avatar-mini" style="background:#43D9AD">S</div>
-        </div>
+        <!-- TAB PLANNING -->
+        <div class="tab-content" id="tab-2" style="display:none">
 
-        <div class="task-item">
-          <div class="task-check todo"></div>
-          <span class="task-label">Courses repas du soir</span>
-          <div class="avatar-mini" style="background:#FF6584; font-size:8px">+2</div>
+          <!-- Jour 1 header : badge violet "J1" + date -->
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <div style="background:linear-gradient(135deg,#6C63FF,#A78BFA);border-radius:10px;padding:4px 10px;font-size:12px;font-weight:800;color:white">J1</div>
+            <span style="font-size:13px;font-weight:700;color:white">Vendredi 14 fév</span>
+          </div>
+
+          <!-- Activité 1 : heure + dot + ligne + carte -->
+          <div style="display:flex;align-items:flex-start;margin-bottom:8px">
+            <div style="width:44px;padding-top:12px;text-align:center;flex-shrink:0">
+              <div style="font-size:10px;font-weight:700;color:#6C63FF">18:00</div>
+              <div style="width:1px;height:8px;background:rgba(108,99,255,0.3);margin:2px auto"></div>
+              <div style="font-size:9px;color:rgba(255,255,255,0.25)">22:00</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;padding-top:8px;margin:0 10px;flex-shrink:0">
+              <div style="width:8px;height:8px;border-radius:50%;background:#6C63FF;border:2px solid #0F0F1A;flex-shrink:0"></div>
+              <div style="width:2px;height:32px;background:rgba(108,99,255,0.2)"></div>
+            </div>
+            <div style="flex:1;padding:10px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:13px;display:flex;align-items:center;gap:8px">
+              <span style="font-size:17px">🚗</span>
+              <span style="font-size:12px;font-weight:600;flex:1">Départ Paris</span>
+              <span style="color:rgba(255,255,255,0.2);font-size:13px">›</span>
+            </div>
+          </div>
+
+          <!-- Activité 2 -->
+          <div style="display:flex;align-items:flex-start;margin-bottom:16px">
+            <div style="width:44px;padding-top:12px;text-align:center;flex-shrink:0">
+              <div style="font-size:10px;font-weight:700;color:#6C63FF">22:00</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;padding-top:8px;margin:0 10px;flex-shrink:0">
+              <div style="width:8px;height:8px;border-radius:50%;background:#6C63FF;border:2px solid #0F0F1A;flex-shrink:0"></div>
+              <div style="width:2px;height:32px;background:rgba(108,99,255,0.2)"></div>
+            </div>
+            <div style="flex:1;padding:10px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:13px;display:flex;align-items:center;gap:8px">
+              <span style="font-size:17px">🏠</span>
+              <span style="font-size:12px;font-weight:600;flex:1">Arrivée chalet</span>
+              <span style="color:rgba(255,255,255,0.2);font-size:13px">›</span>
+            </div>
+          </div>
+
+          <!-- Jour 2 header -->
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <div style="background:linear-gradient(135deg,#6C63FF,#A78BFA);border-radius:10px;padding:4px 10px;font-size:12px;font-weight:800;color:white">J2</div>
+            <span style="font-size:13px;font-weight:700;color:white">Samedi 15 fév</span>
+          </div>
+
+          <!-- Activité 3 -->
+          <div style="display:flex;align-items:flex-start">
+            <div style="width:44px;padding-top:12px;text-align:center;flex-shrink:0">
+              <div style="font-size:10px;font-weight:700;color:#6C63FF">09:00</div>
+              <div style="width:1px;height:8px;background:rgba(108,99,255,0.3);margin:2px auto"></div>
+              <div style="font-size:9px;color:rgba(255,255,255,0.25)">17:00</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;padding-top:8px;margin:0 10px;flex-shrink:0">
+              <div style="width:8px;height:8px;border-radius:50%;background:#6C63FF;border:2px solid #0F0F1A;flex-shrink:0"></div>
+              <div style="width:2px;height:32px;background:rgba(108,99,255,0.2)"></div>
+            </div>
+            <div style="flex:1;padding:10px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:13px;display:flex;align-items:center;gap:8px">
+              <span style="font-size:17px">🎿</span>
+              <span style="font-size:12px;font-weight:600;flex:1">Ski toute la journée</span>
+              <span style="color:rgba(255,255,255,0.2);font-size:13px">›</span>
+            </div>
+          </div>
         </div>
 
         <div class="participants-row">
@@ -740,6 +885,16 @@
   </footer>
 
   <script>
+    // Tab switching in mockup
+    function switchTab(index) {
+      document.querySelectorAll('.phone-tab').forEach((t, i) => {
+        t.classList.toggle('active', i === index);
+      });
+      document.querySelectorAll('.tab-content').forEach((c, i) => {
+        c.style.display = i === index ? 'block' : 'none';
+      });
+    }
+
     // Scroll animations
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
