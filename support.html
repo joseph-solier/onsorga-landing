@@ -30,6 +30,35 @@
     .contact-box h2 { margin-top: 0; }
     .faq-item { margin-bottom: 28px; }
     .faq-item strong { color: #fff; display: block; margin-bottom: 6px; }
+    form { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
+    input, textarea {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(167,139,250,0.25);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: #e0e0e0;
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+      transition: border 0.2s;
+    }
+    input:focus, textarea:focus { border-color: #a78bfa; }
+    textarea { min-height: 120px; resize: vertical; }
+    button[type="submit"] {
+      background: #a78bfa;
+      color: #0f0f19;
+      border: none;
+      border-radius: 8px;
+      padding: 13px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    button[type="submit"]:hover { opacity: 0.85; }
+    button[type="submit"]:disabled { opacity: 0.5; cursor: not-allowed; }
+    #form-success { display: none; color: #86efac; margin-top: 12px; }
+    #form-error   { display: none; color: #fca5a5; margin-top: 12px; }
     footer {
       margin-top: 60px;
       text-align: center;
@@ -72,11 +101,43 @@
   </div>
 
   <div class="contact-box">
-    <h2>Contacter le support</h2>
-    <p>Vous n'avez pas trouvé la réponse à votre question ? Écrivez-nous directement :</p>
-    <p><a href="mailto:support@onsorga.com">support@onsorga.com</a></p>
-    <p>Nous vous répondons sous 48h.</p>
+    <h2>Nous contacter</h2>
+    <p>Vous n'avez pas trouvé la réponse ? Envoyez-nous un message, on répond sous 48h.</p>
+    <form id="contact-form">
+      <input type="text"  name="name"    placeholder="Votre nom"    required />
+      <input type="email" name="email"   placeholder="Votre email"  required />
+      <textarea           name="message" placeholder="Votre message" required></textarea>
+      <button type="submit">Envoyer</button>
+    </form>
+    <p id="form-success">✅ Message envoyé ! On vous répond sous 48h.</p>
+    <p id="form-error">❌ Une erreur est survenue. Réessayez ou écrivez à <a href="mailto:support@onsorga.com">support@onsorga.com</a>.</p>
   </div>
+
+  <script>
+    document.getElementById('contact-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Envoi en cours...';
+      document.getElementById('form-success').style.display = 'none';
+      document.getElementById('form-error').style.display = 'none';
+
+      try {
+        const res = await fetch('/contact', { method: 'POST', body: new FormData(e.target) });
+        if (res.ok) {
+          document.getElementById('form-success').style.display = 'block';
+          e.target.reset();
+        } else {
+          document.getElementById('form-error').style.display = 'block';
+        }
+      } catch {
+        document.getElementById('form-error').style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Envoyer';
+      }
+    });
+  </script>
 
   <footer>
     © 2026 Onsorga &nbsp;·&nbsp;
