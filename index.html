@@ -7,7 +7,7 @@
   <meta name="description" content="Créez un voyage, un événement, un cadeau groupé. Partagez un lien. C'est tout.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -142,7 +142,7 @@
     }
 
     h1 {
-      font-family: 'Syne', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-weight: 800;
       font-size: clamp(42px, 7vw, 80px);
       line-height: 1.05;
@@ -281,7 +281,7 @@
     .phone-emoji { font-size: 22px; }
 
     .phone-title {
-      font-family: 'Syne', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-weight: 800;
       font-size: 18px;
       letter-spacing: -0.5px;
@@ -414,7 +414,7 @@
     }
 
     h2 {
-      font-family: 'Syne', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-weight: 800;
       font-size: clamp(28px, 5vw, 44px);
       letter-spacing: -1.5px;
@@ -457,7 +457,7 @@
     .step:hover::before { opacity: 1; }
 
     .step-number {
-      font-family: 'Syne', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-weight: 800;
       font-size: 11px;
       letter-spacing: 2px;
@@ -472,7 +472,7 @@
     }
 
     .step h3 {
-      font-family: 'Syne', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-weight: 700;
       font-size: 18px;
       letter-spacing: -0.4px;
@@ -610,6 +610,37 @@
         align-items: stretch;
       }
     }
+    /* ── Modale download Android ── */
+    .android-modal {
+      position: fixed; inset: 0; z-index: 1000;
+      display: none; align-items: flex-end; justify-content: center;
+      background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);
+    }
+    .android-modal.show { display: flex; }
+    .am-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 24px 24px 0 0;
+      padding: 30px 24px calc(28px + env(safe-area-inset-bottom));
+      width: 100%; max-width: 480px; text-align: center;
+      animation: amUp 0.32s ease;
+    }
+    @keyframes amUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .am-icon { font-size: 42px; margin-bottom: 6px; }
+    .am-card h3 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.5px; margin-bottom: 8px; }
+    .am-card p { color: var(--muted); font-size: 14.5px; margin-bottom: 22px; line-height: 1.5; }
+    .am-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 16px; border-radius: 14px;
+      background: linear-gradient(135deg, var(--violet) 0%, var(--violet-light) 100%);
+      color: #fff; font-weight: 600; font-size: 16px; text-decoration: none;
+      box-shadow: 0 8px 30px rgba(108,99,255,0.35);
+    }
+    .am-dismiss {
+      display: block; width: 100%; margin-top: 10px; padding: 12px;
+      background: none; border: none; color: var(--muted);
+      font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -619,7 +650,10 @@
   <!-- NAV -->
   <nav>
     <div class="logo">Onsorga</div>
-    <a href="https://app.onsorga.com" class="nav-cta">Ouvrir l'app →</a>
+    <div style="display:flex; gap:12px; align-items:center;">
+      <a href="/download" class="nav-cta">Télécharger</a>
+      <a href="https://app.onsorga.com" class="nav-cta">Ouvrir l'app →</a>
+    </div>
   </nav>
 
   <!-- HERO -->
@@ -643,14 +677,16 @@
     </p>
 
     <div class="hero-actions">
-      <a href="https://app.onsorga.com" class="btn-primary">
-        <span>✦</span>
-        Créer un moment
+      <a href="/download" id="dl-cta" class="btn-primary">
+        <span id="dl-icon">📱</span>
+        <span id="dl-label">Télécharger l'app</span>
       </a>
-      <a href="#comment" class="btn-secondary">
-        Comment ça marche
+      <a href="https://app.onsorga.com" class="btn-secondary">
+        Ouvrir dans le navigateur
       </a>
     </div>
+    <p id="dl-hint" style="margin-top:14px; font-size:13px; color:rgba(255,255,255,0.35);"></p>
+    <a href="#comment" style="display:inline-block; margin-top:14px; font-size:14px; color:rgba(255,255,255,0.4); text-decoration:none;">Comment ça marche ↓</a>
 
     <!-- 3 PHONE FRAMES -->
     <div class="hero-visual">
@@ -936,6 +972,53 @@
       el.style.transitionDelay = `${(i % 3) * 0.1}s`;
       observer.observe(el);
     });
+  </script>
+
+  <!-- Modale téléchargement Android (surgit si appareil Android détecté) -->
+  <div id="android-modal" class="android-modal" role="dialog" aria-modal="true">
+    <div class="am-card">
+      <div class="am-icon">📱</div>
+      <h3>Télécharge Onsorga</h3>
+      <p>Tu es sur Android — installe l'app directement en un tap, sans passer par le Play Store.</p>
+      <a href="/dl/android" class="am-btn" onclick="onsorgaCloseModal()">📥 Télécharger pour Android</a>
+      <button class="am-dismiss" onclick="onsorgaCloseModal()">Continuer sur le site</button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var ua = navigator.userAgent || "";
+      var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      var isAndroid = /Android/.test(ua);
+
+      var cta = document.getElementById("dl-cta"),
+          label = document.getElementById("dl-label"),
+          icon = document.getElementById("dl-icon"),
+          hint = document.getElementById("dl-hint");
+      if (isAndroid && cta) {
+        cta.href = "/dl/android";
+        label.textContent = "Télécharger pour Android";
+        icon.textContent = "📥";
+        hint.textContent = "APK · installation directe, sans Play Store";
+      } else if (isIOS && cta) {
+        cta.href = "https://apps.apple.com/app/id6760930478";
+        label.textContent = "Télécharger sur l'App Store";
+      }
+
+      if (isAndroid) {
+        var m = document.getElementById("android-modal");
+        if (m) {
+          m.classList.add("show");
+          document.body.style.overflow = "hidden";
+          m.addEventListener("click", function (e) { if (e.target === m) onsorgaCloseModal(); });
+        }
+      }
+    })();
+
+    function onsorgaCloseModal() {
+      var m = document.getElementById("android-modal");
+      if (m) { m.classList.remove("show"); document.body.style.overflow = ""; }
+    }
   </script>
 
 </body>
