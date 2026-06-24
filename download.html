@@ -7,7 +7,7 @@
   <meta name="description" content="Téléchargez Onsorga sur iPhone ou Android et organisez vos voyages, événements et cadeaux groupés.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -127,7 +127,7 @@
     @keyframes pulse { 0%,100% { opacity:1; transform:scale(1);} 50% { opacity:.5; transform:scale(.8);} }
 
     h1 {
-      font-family: 'Syne', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-weight: 800;
       font-size: clamp(36px, 6vw, 60px);
       line-height: 1.05;
@@ -326,7 +326,7 @@
 
   <script>
     (function () {
-      var APK_URL = "https://github.com/joseph-solier/onsorga_releases/releases/latest/download/Onsorga-Android.apk";
+      var APK_URL = "/dl/android"; // proxy Cloudflare → masque github (cf. functions/dl/android.js)
       var APPSTORE_URL = "https://apps.apple.com/app/id6760930478";
 
       // ── PostHog (capture léger via sendBeacon, sans charger la lib) ──
@@ -394,7 +394,7 @@
         actions.appendChild(btn(APK_URL, "btn-secondary", "⬇", "APK (Android)", null, "apk"));
         var qr = document.getElementById("qr");
         document.getElementById("qr-img").src =
-          "https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=0&data=" + encodeURIComponent(location.href);
+          "https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=0&data=" + encodeURIComponent("https://onsorga.com/download");
         qr.style.display = "flex";
       }
     })();
