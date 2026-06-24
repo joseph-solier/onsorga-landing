@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Télécharger Onsorga</title>
+  <meta name="description" content="Téléchargez Onsorga sur iPhone ou Android et organisez vos voyages, événements et cadeaux groupés.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --violet: #6C63FF;
+      --violet-light: #A78BFA;
+      --pink: #F9A8D4;
+      --bg: #0A0A14;
+      --bg2: #0F0F1A;
+      --bg3: #1A1A2E;
+      --text: #FFFFFF;
+      --muted: rgba(255,255,255,0.4);
+      --border: rgba(255,255,255,0.07);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-glow {
+      position: fixed;
+      top: -20vh;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(108,99,255,0.18) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10,10,20,0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.8px;
+      text-decoration: none;
+      background: linear-gradient(135deg, #fff 0%, var(--violet-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-cta {
+      background: rgba(108,99,255,0.15);
+      border: 1px solid rgba(108,99,255,0.3);
+      color: var(--violet-light);
+      padding: 9px 20px;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .nav-cta:hover { background: rgba(108,99,255,0.25); border-color: var(--violet); }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(108,99,255,0.1);
+      border: 1px solid rgba(108,99,255,0.25);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: var(--violet-light);
+      margin-bottom: 28px;
+    }
+    .badge-dot {
+      width: 6px; height: 6px;
+      background: var(--violet-light);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity:1; transform:scale(1);} 50% { opacity:.5; transform:scale(.8);} }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(36px, 6vw, 60px);
+      line-height: 1.05;
+      letter-spacing: -1.5px;
+      max-width: 700px;
+    }
+    h1 .accent {
+      background: linear-gradient(135deg, var(--violet) 0%, var(--violet-light) 50%, var(--pink) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .sub {
+      margin-top: 20px;
+      font-size: clamp(15px, 2.5vw, 19px);
+      color: var(--muted);
+      max-width: 440px;
+      font-weight: 300;
+    }
+
+    /* ── Download actions ── */
+    .actions {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .btn {
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 24px;
+      border-radius: 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
+    }
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--violet) 0%, var(--violet-light) 100%);
+      color: #fff;
+      box-shadow: 0 8px 30px rgba(108,99,255,0.35);
+    }
+    .btn-primary:hover { box-shadow: 0 10px 40px rgba(108,99,255,0.5); }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.08); }
+
+    .btn .icon { font-size: 20px; line-height: 1; }
+    .btn small { display:block; font-size: 11px; opacity: 0.75; font-weight: 400; }
+    .btn .btn-label { text-align: left; }
+
+    /* ── Webview banner ── */
+    .webview-banner {
+      display: none;
+      margin-top: 28px;
+      max-width: 420px;
+      background: rgba(249,168,212,0.08);
+      border: 1px solid rgba(249,168,212,0.3);
+      border-radius: 14px;
+      padding: 16px 18px;
+      text-align: left;
+      font-size: 14px;
+      color: rgba(255,255,255,0.8);
+    }
+    .webview-banner b { color: var(--pink); }
+
+    /* ── Install guide ── */
+    .guide {
+      display: none;
+      margin-top: 36px;
+      max-width: 420px;
+      text-align: left;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 24px;
+    }
+    .guide h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--violet-light);
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .guide ol { list-style: none; counter-reset: step; }
+    .guide li {
+      counter-increment: step;
+      position: relative;
+      padding-left: 36px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.75);
+    }
+    .guide li:last-child { margin-bottom: 0; }
+    .guide li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0; top: 0;
+      width: 24px; height: 24px;
+      background: rgba(108,99,255,0.15);
+      border: 1px solid rgba(108,99,255,0.3);
+      color: var(--violet-light);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600;
+    }
+    .guide .note { margin-top: 14px; font-size: 12.5px; color: var(--muted); }
+
+    /* ── QR (desktop) ── */
+    .qr {
+      display: none;
+      margin-top: 36px;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .qr-box {
+      background: #fff;
+      padding: 14px;
+      border-radius: 18px;
+      line-height: 0;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    }
+    .qr-box img { width: 200px; height: 200px; display: block; }
+    .qr p { font-size: 14px; color: var(--muted); max-width: 260px; }
+
+    .foot { margin-top: 48px; font-size: 13px; color: var(--muted); }
+    .foot a { color: var(--violet-light); text-decoration: none; }
+    .foot a:hover { text-decoration: underline; }
+
+    @media (max-width: 480px) {
+      nav { padding: 16px 20px; }
+      .wrap { padding: 100px 20px 60px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <nav>
+    <a href="/" class="logo">Onsorga</a>
+    <a href="/" class="nav-cta">← Le site</a>
+  </nav>
+
+  <main class="wrap">
+    <div class="badge"><span class="badge-dot"></span><span id="badge-text">Téléchargement</span></div>
+    <h1>Emportez <span class="accent">Onsorga</span><br>partout</h1>
+    <p class="sub">Vos voyages, événements et cadeaux groupés — organisés à plusieurs, au même endroit.</p>
+
+    <!-- Bandeau webview in-app (Android dans TikTok/Insta) -->
+    <div class="webview-banner" id="webview-banner">
+      ⚠️ <b>Tu es dans une app</b> (TikTok, Instagram…). Le téléchargement peut être bloqué ici.<br>
+      Appuie sur <b>⋮</b> (en haut à droite) → <b>« Ouvrir dans le navigateur »</b> (Chrome), puis reviens sur cette page.
+    </div>
+
+    <!-- Boutons injectés selon la plateforme -->
+    <div class="actions" id="actions"></div>
+
+    <!-- Guide install Android -->
+    <div class="guide" id="guide">
+      <h3>Installer l'APK en 4 étapes</h3>
+      <ol>
+        <li>Appuie sur <b>Télécharger l'APK</b> — le fichier se télécharge.</li>
+        <li>Ouvre le fichier téléchargé (notification ou dossier <b>Téléchargements</b>).</li>
+        <li>Android demande l'autorisation → active <b>« Autoriser cette source »</b>.</li>
+        <li>Reviens et appuie sur <b>Installer</b>.</li>
+      </ol>
+      <p class="note">Si un avertissement « Play Protect » apparaît, choisis <b>« Installer quand même »</b> — l'app est signée par Onsorga.</p>
+    </div>
+
+    <!-- QR desktop -->
+    <div class="qr" id="qr">
+      <div class="qr-box"><img id="qr-img" alt="QR code pour ouvrir sur mobile"></div>
+      <p>Scanne ce QR code avec ton téléphone pour télécharger Onsorga.</p>
+    </div>
+
+    <p class="foot">Besoin d'aide ? <a href="/support.html">Support</a> · <a href="/privacy.html">Confidentialité</a></p>
+  </main>
+
+  <script>
+    (function () {
+      var APK_URL = "https://github.com/joseph-solier/onsorga_releases/releases/latest/download/Onsorga-Android.apk";
+      var APPSTORE_URL = "https://apps.apple.com/app/id6760930478";
+
+      // ── PostHog (capture léger via sendBeacon, sans charger la lib) ──
+      var PH_KEY = "phc_38TzqfIubHMzh5dGh2JaLWW15ML8SjZ9Ic6nxs3CbTF";
+      var PH_HOST = "https://eu.i.posthog.com";
+      function getDID() {
+        try {
+          var k = "ph_did", v = localStorage.getItem(k);
+          if (!v) {
+            v = (crypto && crypto.randomUUID) ? crypto.randomUUID()
+              : "web-" + Date.now() + "-" + Math.random().toString(16).slice(2);
+            localStorage.setItem(k, v);
+          }
+          return v;
+        } catch (e) { return "web-anon"; }
+      }
+      function track(event, props) {
+        try {
+          var body = JSON.stringify({
+            api_key: PH_KEY,
+            event: event,
+            distinct_id: getDID(),
+            properties: Object.assign({ $current_url: location.href, source: "download_page" }, props || {})
+          });
+          navigator.sendBeacon(PH_HOST + "/capture/", new Blob([body], { type: "application/json" }));
+        } catch (e) {}
+      }
+
+      // ── Détection plateforme ──
+      var ua = navigator.userAgent || "";
+      var isIOS = /iPad|iPhone|iPod/.test(ua) ||
+                  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1); // iPadOS
+      var isAndroid = /Android/.test(ua);
+      var isInApp = /Instagram|FBAN|FBAV|FB_IAB|TikTok|musical_ly|BytedanceWebview|Snapchat|Line\/|Twitter|Pinterest|GSA/.test(ua);
+
+      var platform = isIOS ? "ios" : (isAndroid ? "android" : "desktop");
+      track("download_page_view", { platform: platform, in_app_webview: isInApp });
+
+      function btn(href, cls, icon, label, sub, target) {
+        var a = document.createElement("a");
+        a.href = href;
+        a.className = "btn " + cls;
+        a.innerHTML = '<span class="icon">' + icon + '</span><span class="btn-label">' + label +
+                      (sub ? '<small>' + sub + '</small>' : '') + '</span>';
+        a.addEventListener("click", function () {
+          track("download_click", { platform: platform, target: target, in_app_webview: isInApp });
+        });
+        return a;
+      }
+
+      var actions = document.getElementById("actions");
+
+      if (isIOS) {
+        document.getElementById("badge-text").textContent = "iPhone / iPad";
+        actions.appendChild(btn(APPSTORE_URL, "btn-primary", "", "Télécharger sur l'App Store", "iPhone & iPad", "appstore"));
+      } else if (isAndroid) {
+        document.getElementById("badge-text").textContent = "Android";
+        actions.appendChild(btn(APK_URL, "btn-primary", "⬇", "Télécharger l'APK", "Android · installation directe", "apk"));
+        document.getElementById("guide").style.display = "block";
+        if (isInApp) document.getElementById("webview-banner").style.display = "block";
+      } else {
+        // Desktop / inconnu : QR + les deux options
+        document.getElementById("badge-text").textContent = "Ordinateur";
+        actions.appendChild(btn(APPSTORE_URL, "btn-secondary", "", "App Store (iPhone)", null, "appstore"));
+        actions.appendChild(btn(APK_URL, "btn-secondary", "⬇", "APK (Android)", null, "apk"));
+        var qr = document.getElementById("qr");
+        document.getElementById("qr-img").src =
+          "https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=0&data=" + encodeURIComponent(location.href);
+        qr.style.display = "flex";
+      }
+    })();
+  </script>
+</body>
+</html>
