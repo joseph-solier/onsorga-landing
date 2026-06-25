@@ -592,6 +592,10 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
       nav { padding: 16px 20px; }
+      /* Le "Télécharger" du nav est redondant avec le gros CTA du hero et
+         écrasait le logo Onsorga sur petit écran → on ne garde que "Ouvrir l'app". */
+      .nav-cta-dl { display: none; }
+      .nav-cta { padding: 8px 14px; font-size: 13px; }
       .hero { padding: 100px 20px 60px; }
       .hero-actions { flex-direction: column; align-items: center; }
       .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
@@ -651,7 +655,7 @@
   <nav>
     <div class="logo">Onsorga</div>
     <div style="display:flex; gap:12px; align-items:center;">
-      <a href="/download" class="nav-cta">Télécharger</a>
+      <a href="/download" class="nav-cta nav-cta-dl">Télécharger</a>
       <a href="https://app.onsorga.com" class="nav-cta">Ouvrir l'app →</a>
     </div>
   </nav>
